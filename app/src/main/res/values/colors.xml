@@ -10,4 +10,5 @@
     <color name="refresh_color_3">#d5f137</color>
     <color name="refresh_color_4">#f59e12</color>
     <color name="color_black">#000000</color>
+    <color name="play_control_bg_color">#81282727</color>
 </resources>

@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity implements  NavigationView.OnNavi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         showDefaultFragment();
+
     }
 
     @Override

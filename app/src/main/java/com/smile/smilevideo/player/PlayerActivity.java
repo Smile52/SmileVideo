@@ -49,6 +49,7 @@ public class PlayerActivity extends BaseActivity {
         return new String[0];
     }
 
+
     @Override
     protected void permissionGrantedSuccess() {
 
