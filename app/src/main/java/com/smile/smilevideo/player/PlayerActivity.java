@@ -60,7 +60,8 @@ public class PlayerActivity extends BaseActivity  {
     private int screenMode;
     private VerticalSeekBarWrapper mLightWrapper, mSoundWrapper;
     private VerticalSeekBar mLightSeekbar, mSoundSeekbar;
-
+    private int soundAudio;
+    private AudioManager audioManager;
 
     @Override
     protected void initView() {
@@ -100,8 +101,18 @@ public class PlayerActivity extends BaseActivity  {
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        soundAudio = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+      //  soundMode = audioManager.getMode();
+
         mLightSeekbar.setMax(255);
         mLightSeekbar.setProgress(screenBrightness);
+
+        mSoundSeekbar.setMax(15);
+        mSoundSeekbar.setProgress(soundAudio);
+        if (screenMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
+            setScreenMode(Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        }
     }
 
     Handler mUiHandler = new Handler(){
@@ -163,7 +174,7 @@ public class PlayerActivity extends BaseActivity  {
 
                 mLightWrapper.setVisibility(View.VISIBLE);
                 int i = mLightSeekbar.getProgress();
-                mLightSeekbar.setProgress(i+20);
+                mLightSeekbar.setProgress(i+(int) distance/b);
                 setScreenBrightness(mLightSeekbar.getProgress());
                 hideSeekbar(mLightWrapper);
             }
@@ -172,19 +183,27 @@ public class PlayerActivity extends BaseActivity  {
             public void onLeftMoveDown(float distance) {
                 mLightWrapper.setVisibility(View.VISIBLE);
                 int i = mLightSeekbar.getProgress();
-                mLightSeekbar.setProgress(i-20);
+                mLightSeekbar.setProgress(i-(int) distance/b);
                 setScreenBrightness(mLightSeekbar.getProgress());
                 hideSeekbar(mLightWrapper);
             }
 
             @Override
             public void onRightMoveUp(float distance) {
-
+                mSoundWrapper.setVisibility(View.VISIBLE);
+                int i =mSoundSeekbar.getProgress();
+                mSoundSeekbar.setProgress(i+ (int) distance/a);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mSoundSeekbar.getProgress(), AudioManager.FLAG_PLAY_SOUND);
+                hideSeekbar(mSoundWrapper);
             }
 
             @Override
             public void onRightMoveDown(float distance) {
-
+                mSoundWrapper.setVisibility(View.VISIBLE);
+                int i =mSoundSeekbar.getProgress();
+                mSoundSeekbar.setProgress(i- (int) distance/a);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mSoundSeekbar.getProgress(), AudioManager.FLAG_PLAY_SOUND);
+                hideSeekbar(mSoundWrapper);
             }
         });
         if (screenMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
@@ -208,6 +227,24 @@ public class PlayerActivity extends BaseActivity  {
                 setScreenBrightness(seekPos);
             }
         });
+        mSoundSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int seekPos = seekBar.getProgress();
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, seekPos, AudioManager.FLAG_PLAY_SOUND);
+            }
+        });
+
     }
 
     private void hideSeekbar(final VerticalSeekBarWrapper wrapper){
@@ -291,10 +328,18 @@ public class PlayerActivity extends BaseActivity  {
             int height = dm.heightPixels;
             Logger.e("width  "+width);
             Logger.e("height "+height);
+            mScreenHeight =height;
+            b=height/255;
+            a=height/15;
             }else {
 
         }
     }
+    private int b;
+    private int a;
+
+    private int mScreenHeight ;
+
 
     private void setScreenMode(int value) {
         Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, value);
