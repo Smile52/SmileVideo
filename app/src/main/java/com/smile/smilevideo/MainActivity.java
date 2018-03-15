@@ -2,7 +2,10 @@ package com.smile.smilevideo;
 
 import android.content.Intent;
 import android.graphics.ImageFormat;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -20,6 +23,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.smile.smilevideo.author.AuthorFragment;
 import com.smile.smilevideo.base.BaseActivity;
 import com.smile.smilevideo.base.BaseFragment;
@@ -108,7 +113,17 @@ public class MainActivity extends BaseActivity implements  NavigationView.OnNavi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         showDefaultFragment();
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(MainActivity.this)) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + MainActivity.this.getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MainActivity.this.startActivity(intent);
+            }
+
+        }
     }
 
     @Override

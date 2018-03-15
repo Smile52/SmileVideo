@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_content_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar_layout"/>
+    <com.smile.smilevideo.view.PlayerFrameLayout
+        android:id="@+id/player_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-    <com.smile.smilevideo.widget.media.IjkVideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+        <com.smile.smilevideo.widget.media.IjkVideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:id="@+id/part_play_control_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            android:background="@color/play_control_bg_color">
+            android:background="@color/play_control_bg_color"
+            android:orientation="horizontal">
+
             <SeekBar
+                android:id="@+id/play_video_seekbar"
                 android:layout_width="0dp"
-                android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="10dp"
-                />
+                android:layout_weight="4" />
+
             <ImageView
+                android:id="@+id/change_img"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/all"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/all" />
         </LinearLayout>
 
-    </FrameLayout>
+        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+            android:id="@+id/player_light_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+            <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                android:id="@+id/player_light_seekbar"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:splitTrack="false"
+                app:seekBarRotation="CW270"
+                />
+        </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+            android:id="@+id/player_sound_wrapper"
+
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="20dp"
+            android:visibility="invisible">
+            <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+                android:id="@+id/player_sound_seekbar"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:splitTrack="false"
+                app:seekBarRotation="CW270"
+                />
+        </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+
+    </com.smile.smilevideo.view.PlayerFrameLayout>
 </LinearLayout>

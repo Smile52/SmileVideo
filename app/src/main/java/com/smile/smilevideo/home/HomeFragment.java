@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.orhanobut.logger.Logger;
 import com.smile.smilevideo.R;
 import com.smile.smilevideo.adapter.HomeAdapter;
 import com.smile.smilevideo.base.BaseFragment;
@@ -45,7 +46,7 @@ public class HomeFragment extends BaseFragment implements IHomeView{
         super.initData();
         mPresenter = new HomePresenter(getContext(), this);
         mCount =1;
-
+        Logger.e("德玛西亚");
         mPresenter.getSomeInfo(String.valueOf(mCount));
         initSwipeRefreshLayout(mRefreshLayout);
     }

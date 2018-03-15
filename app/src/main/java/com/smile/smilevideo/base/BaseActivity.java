@@ -137,6 +137,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         mRightmenu.setVisibility(View.GONE);
     }
 
+    public Toolbar getToolbar(){
+        return mToolbar;
+    }
+
     public ImageView getToolbarmenu(){
         mRightmenu.setVisibility(View.VISIBLE);
         return mRightmenu;
