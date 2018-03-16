@@ -4,12 +4,15 @@
     android:id="@+id/player_content_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <include layout="@layout/toolbar_layout"/>
+    android:orientation="vertical"
+    android:background="#ffffff"
+    >
     <com.smile.smilevideo.view.PlayerFrameLayout
         android:id="@+id/player_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#000000">
+
 
         <com.smile.smilevideo.widget.media.IjkVideoView
             android:id="@+id/videoView"
@@ -73,7 +76,7 @@
                 app:seekBarRotation="CW270"
                 />
         </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
-
+        <include layout="@layout/toolbar_layout"/>
 
     </com.smile.smilevideo.view.PlayerFrameLayout>
 </LinearLayout>

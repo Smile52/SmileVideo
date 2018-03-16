@@ -1,6 +1,7 @@
 package com.smile.smilevideo.player;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -30,10 +31,13 @@ import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper;
 import com.orhanobut.logger.Logger;
 import com.smile.smilevideo.R;
 import com.smile.smilevideo.base.BaseActivity;
+import com.smile.smilevideo.config.Config;
 import com.smile.smilevideo.home.HomeFragment;
 import com.smile.smilevideo.view.PlayerFrameLayout;
 import com.smile.smilevideo.widget.media.AndroidMediaController;
 import com.smile.smilevideo.widget.media.IjkVideoView;
+
+import java.math.BigDecimal;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -45,12 +49,6 @@ public class PlayerActivity extends BaseActivity  {
     private IjkVideoView videoView;
     private AndroidMediaController mediaController;
     private boolean backPressed;
-
-    private FragmentManager mManager;
-    private FragmentTransaction mTransaction;
-
-    private AllPlayerFragment mAllPlayerFragment;
-    private PartPlayerFragment mPartPlayerFragment;
     private View mChange;
     private LinearLayout mContentLayout;
     private android.support.v7.widget.Toolbar mToolbar;
@@ -63,12 +61,12 @@ public class PlayerActivity extends BaseActivity  {
     private int soundAudio;
     private AudioManager audioManager;
 
+
     @Override
     protected void initView() {
         setContentView(R.layout.activity_player);
         initSomething();
         addToolbar();
-        play();
 
         //showDefaultFragment();
     }
@@ -113,6 +111,13 @@ public class PlayerActivity extends BaseActivity  {
         if (screenMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
             setScreenMode(Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
         }
+        Intent intent =getIntent();
+        String url =intent.getStringExtra(Config.INTENT_URL);
+        mediaController = new AndroidMediaController(this, false);
+        videoView.setMediaController(mediaController);
+        play(url);
+
+
     }
 
     Handler mUiHandler = new Handler(){
@@ -164,6 +169,7 @@ public class PlayerActivity extends BaseActivity  {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int seekPos = seekBar.getProgress();
                 videoView.seekTo(seekPos);
+
             }
         });
 
@@ -245,6 +251,7 @@ public class PlayerActivity extends BaseActivity  {
             }
         });
 
+
     }
 
     private void hideSeekbar(final VerticalSeekBarWrapper wrapper){
@@ -266,9 +273,12 @@ public class PlayerActivity extends BaseActivity  {
 
     }
 
-    private void play(){
-        videoView.setVideoPath("http://baobab.kaiyanapp.com/api/v1/playUrl?vid=56758&editionType=high&source=ucloud");
+    private void play(String url){
+      //  videoView.setVideoPath("http://baobab.kaiyanapp.com/api/v1/playUrl?vid=56758&editionType=high&source=ucloud");
+       videoView.setVideoPath(url);
         videoView.start();
+
+
     }
 
 
@@ -307,17 +317,18 @@ public class PlayerActivity extends BaseActivity  {
         backPressed = true;
 
         super.onBackPressed();
+
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {//切换为横屏
             Log.e("dandy","切换为横屏");
-            WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mToolbar.setVisibility(View.GONE);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
             videoView.setLayoutParams(lp);
            // mContentLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
@@ -326,9 +337,10 @@ public class PlayerActivity extends BaseActivity  {
             float density = dm.density;
             int width = dm.widthPixels;
             int height = dm.heightPixels;
-            Logger.e("width  "+width);
-            Logger.e("height "+height);
+
             mScreenHeight =height;
+            mScreenWidth = width;
+
             b=height/255;
             a=height/15;
             }else {
@@ -339,7 +351,7 @@ public class PlayerActivity extends BaseActivity  {
     private int a;
 
     private int mScreenHeight ;
-
+    private int mScreenWidth;
 
     private void setScreenMode(int value) {
         Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, value);
@@ -352,4 +364,7 @@ public class PlayerActivity extends BaseActivity  {
         w.setAttributes(l);
         Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, value);
     }
+
+
+
 }

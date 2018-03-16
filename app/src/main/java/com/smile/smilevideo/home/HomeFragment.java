@@ -1,5 +1,6 @@
 package com.smile.smilevideo.home;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 import com.smile.smilevideo.R;
 import com.smile.smilevideo.adapter.HomeAdapter;
 import com.smile.smilevideo.base.BaseFragment;
+import com.smile.smilevideo.config.Config;
 import com.smile.smilevideo.entity.HomeEntity;
+import com.smile.smilevideo.player.PlayerActivity;
 
 import java.util.List;
 
@@ -26,6 +30,7 @@ public class HomeFragment extends BaseFragment implements IHomeView{
     private RecyclerView mContentView;
     private int mCount;
     private HomeAdapter mAdapter;
+    private List<HomeEntity.ItemListBean> mDatas;
 
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
@@ -53,8 +58,22 @@ public class HomeFragment extends BaseFragment implements IHomeView{
 
     @Override
     public void setItemListData(List<HomeEntity.ItemListBean> listData) {
-        Log.e("dandy"," 首页视频size  "+listData.size());
-        mAdapter = new HomeAdapter(listData, getContext());
+        this.mDatas= listData;
+        mAdapter = new HomeAdapter(mDatas, getContext());
         mContentView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(getActivity(), PlayerActivity.class);
+                intent.putExtra(Config.INTENT_URL, mDatas.get(position).getData().getPlayUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void setListener() {
+        super.setListener();
+
     }
 }

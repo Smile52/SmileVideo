@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import tv.danmaku.ijk.media.exo.IjkExoMediaPlayer;
 import tv.danmaku.ijk.media.player.AndroidMediaPlayer;
@@ -406,7 +407,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 seekTo(seekToPosition);
             }
             if (mVideoWidth != 0 && mVideoHeight != 0) {
-                //Log.i("@@@@", "video size: " + mVideoWidth +"/"+ mVideoHeight);
+                Log.e("@@@@", "video size: " + mVideoWidth +"/"+ mVideoHeight);
                 // REMOVED: getHolder().setFixedSize(mVideoWidth, mVideoHeight);
                 if (mRenderView != null) {
                     mRenderView.setVideoSize(mVideoWidth, mVideoHeight);
@@ -867,9 +868,11 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
             IRenderView.AR_ASPECT_FIT_PARENT,
             IRenderView.AR_ASPECT_FILL_PARENT,
             IRenderView.AR_ASPECT_WRAP_CONTENT,
-            // IRenderView.AR_MATCH_PARENT,
+             IRenderView.AR_MATCH_PARENT,
             IRenderView.AR_16_9_FIT_PARENT,
-            IRenderView.AR_4_3_FIT_PARENT};
+            IRenderView.AR_4_3_FIT_PARENT,
+            IRenderView.AR_18_9_FIT_PARENT
+            };
     private int mCurrentAspectRatioIndex = 0;
     private int mCurrentAspectRatio = s_allAspectRatio[0];
 
@@ -1211,4 +1214,15 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public int getSelectedTrack(int trackType) {
         return MediaPlayerCompat.getSelectedTrack(mMediaPlayer, trackType);
     }
+
+    public IRenderView getmRenderView() {
+        return mRenderView;
+    }
+    public int getmVideoWidth() {
+        return mVideoWidth;
+    }
+    public int getmVideoHeight() {
+        return mVideoHeight;
+    }
+
 }

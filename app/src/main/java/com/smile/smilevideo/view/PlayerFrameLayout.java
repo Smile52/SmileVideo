@@ -64,20 +64,18 @@ public class PlayerFrameLayout extends FrameLayout {
             //按下
 
             case MotionEvent.ACTION_DOWN:
-                Log.e("dandy","111");
                 //当手指按下的时候
                 x1 = event.getX();
                 y1 = event.getY();
 
                 break;
-            //移动
-            case MotionEvent.ACTION_MOVE:
+            //抬起
+            case MotionEvent.ACTION_UP:
                // Log.e("dandy","www");
                 break;
 
-            //抬起
-            case MotionEvent.ACTION_UP:
-                Log.e("dandy","dandy,,");
+            //移动
+            case MotionEvent.ACTION_MOVE:
                 //当手指离开的时候
                 x2 = event.getX();
                 y2 = event.getY();

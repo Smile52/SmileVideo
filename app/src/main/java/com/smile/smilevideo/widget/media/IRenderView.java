@@ -32,6 +32,7 @@ public interface IRenderView {
     int AR_MATCH_PARENT = 3;
     int AR_16_9_FIT_PARENT = 4;
     int AR_4_3_FIT_PARENT = 5;
+    int AR_18_9_FIT_PARENT =6 ;
 
     View getView();
 
