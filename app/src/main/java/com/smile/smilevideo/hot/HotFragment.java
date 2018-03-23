@@ -15,6 +15,7 @@ public class HotFragment extends BaseFragment{
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_hot, container, false);
+
     }
 
     @Override

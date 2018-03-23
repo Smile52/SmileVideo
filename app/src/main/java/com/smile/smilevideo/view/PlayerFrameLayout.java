@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.smile.smilevideo.widget.media.IjkVideoView;
 
 /**
  * Created by yaojiulong on 2018/3/15.
@@ -28,6 +29,7 @@ public class PlayerFrameLayout extends FrameLayout {
     private Context mContext;
     private int mScreenWidth, mScreenHeight;
     private OnLayoutMoveListener mMoveListener;
+    private IjkVideoView mVideoView;
 
     public PlayerFrameLayout(@NonNull Context context) {
         this(context, null);
@@ -60,6 +62,7 @@ public class PlayerFrameLayout extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
        // Log.e("dandy","eeeeee");
+
         switch (event.getAction()){
             //按下
 
@@ -71,7 +74,8 @@ public class PlayerFrameLayout extends FrameLayout {
                 break;
             //抬起
             case MotionEvent.ACTION_UP:
-               // Log.e("dandy","www");
+                mMoveListener.onClick();
+                Log.e("dandy","www");
                 break;
 
             //移动
@@ -136,6 +140,10 @@ public class PlayerFrameLayout extends FrameLayout {
         }
     }
 
+    public void setVideoView(IjkVideoView videoView){
+        this.mVideoView = videoView;
+    }
+
     public void setMoveListener(OnLayoutMoveListener listener){
         this.mMoveListener = listener;
     }
@@ -146,5 +154,7 @@ public class PlayerFrameLayout extends FrameLayout {
         void onLeftMoveDown( float distance);
         void onRightMoveUp( float distance);
         void onRightMoveDown( float distance);
+        void onClick();
     }
+
 }

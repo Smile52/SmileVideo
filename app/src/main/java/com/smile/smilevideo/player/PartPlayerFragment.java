@@ -67,7 +67,7 @@ public class PartPlayerFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         if (backPressed || videoView.isBackgroundPlayEnabled()) {
-            videoView.stopPlayback();
+            videoView.stopBackgroundPlay();
             videoView.release(true);
             videoView.stopBackgroundPlay();
         } else {

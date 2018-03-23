@@ -32,7 +32,7 @@ import com.orhanobut.logger.Logger;
 import com.smile.smilevideo.R;
 import com.smile.smilevideo.base.BaseActivity;
 import com.smile.smilevideo.config.Config;
-import com.smile.smilevideo.home.HomeFragment;
+
 import com.smile.smilevideo.view.PlayerFrameLayout;
 import com.smile.smilevideo.widget.media.AndroidMediaController;
 import com.smile.smilevideo.widget.media.IjkVideoView;
@@ -87,7 +87,6 @@ public class PlayerActivity extends BaseActivity  {
     }
 
 
-
     @Override
     protected void initData() {
         super.initData();
@@ -114,10 +113,8 @@ public class PlayerActivity extends BaseActivity  {
         Intent intent =getIntent();
         String url =intent.getStringExtra(Config.INTENT_URL);
         mediaController = new AndroidMediaController(this, false);
-        videoView.setMediaController(mediaController);
+
         play(url);
-
-
     }
 
     Handler mUiHandler = new Handler(){
@@ -211,6 +208,15 @@ public class PlayerActivity extends BaseActivity  {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mSoundSeekbar.getProgress(), AudioManager.FLAG_PLAY_SOUND);
                 hideSeekbar(mSoundWrapper);
             }
+
+            @Override
+            public void onClick() {
+                if (videoView.isPlaying()){
+                    videoView.pause();
+                }else {
+                    videoView.start();
+                }
+            }
         });
         if (screenMode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC) {
             setScreenMode(Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
@@ -301,12 +307,12 @@ public class PlayerActivity extends BaseActivity  {
     @Override
     protected void onPause() {
         super.onPause();
-        if (backPressed || videoView.isBackgroundPlayEnabled()) {
+        if (backPressed || videoView.isPlaying()) {
             videoView.stopPlayback();
             videoView.release(true);
-            videoView.stopBackgroundPlay();
+            videoView.stopPlayback();
         } else {
-            videoView.stopBackgroundPlay();
+            videoView.stopPlayback();
         }
         videoView.pause();
         IjkMediaPlayer.native_profileEnd();
@@ -330,7 +336,6 @@ public class PlayerActivity extends BaseActivity  {
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
             videoView.setLayoutParams(lp);
-           // mContentLayout.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
             Resources resources = this.getResources();
             DisplayMetrics dm = resources.getDisplayMetrics();
